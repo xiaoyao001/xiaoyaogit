@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.boot.org.dao.InsuranceProductRelationMapper">
+	
+	
+	<resultMap type="com.boot.org.InsuranceProductRelation" id="relationResultMap">
+		<id column="insurance_product_relation_id" property="insuranceProductRelationId" jdbcType="INTEGER"/>
+		<result column="relation_name" property="relationName" jdbcType="VARCHAR"/>
+		<result column="relation_number" property="relationNumber" jdbcType="INTEGER"/>
+		<result column="delete_flag" property="deleteFlag" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	
+	<select id="relationList" resultMap="relationResultMap" parameterType="java.lang.Integer">
+		SELECT * FROM insurance_product_relation WHERE delete_flag = 0 AND relation_number = #{_parameter}
+	</select>
+
+</mapper>
