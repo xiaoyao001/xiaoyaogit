@@ -24,7 +24,6 @@ public class ThreadTest {
 				thread3.start();
 				thread4.start();
 				thread5.start();
-				Thread.currentThread().join();
 				System.err.println("所有的子线程执行完毕：当前count为"+count);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -41,9 +40,10 @@ public class ThreadTest {
 			while(count>0){
 				lock.lock();
 				try {
-					//if(count>0){
+						if(count == 50){
+							Thread.currentThread().join();
+						}
 						System.out.println(Thread.currentThread().getName()+"现在售卖出的票为："+(count--)+"号");
-					//}
 				} catch (Exception e) {
 					// TODO: handle exception
 				}finally{
