@@ -3,12 +3,15 @@ package com.boot.org.test;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.serialize.SerializableSerializer;
 
-public class ZookeeperLock {
+public class ZookeeperLock implements Lock{
 
 	private static final String LOCK_PATH = "/LOCK";
 	
@@ -29,7 +32,7 @@ public class ZookeeperLock {
 		}
 	}
 	
-	
+	@Override
 	public void lock(){
 		if(tryLock()){
 			return;
@@ -94,11 +97,30 @@ public class ZookeeperLock {
 	
 	
 	public void unlock(){
-//		if(currentPoint != null){
-//			String currentPath = LOCK_PATH+currentPoint;
-//			System.out.println("删除的节点路劲为："+currentPoint);
-			zkClient.delete(currentPoint);
-			System.out.println(currentPoint+"解锁");
-		//}
+		if(currentPoint != null){
+			if(zkClient.delete(currentPoint)){
+				System.out.println("节点删除成功"+currentPoint);
+			}else{
+				System.out.println("节点删除失败"+currentPoint);
+			}
+		}
+	}
+
+	@Override
+	public void lockInterruptibly() throws InterruptedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Condition newCondition() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
