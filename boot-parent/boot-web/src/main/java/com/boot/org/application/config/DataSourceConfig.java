@@ -26,17 +26,17 @@ public class DataSourceConfig {
 
 	// 扫描dao包
     static final String DAOPACKAGE = "com.boot.org.dao";
-    @Value("${spring.datasource.one.url}")
-    private String url;
+    //@Value("${spring.datasource.one.url}")
+    private String url = "jdbc:postgresql://47.92.81.255:5432/operation";
 
-    @Value("${spring.datasource.one.username}")
-    private String username;
+    //@Value("${spring.datasource.one.username}")
+    private String username = "jubaoadmin123";
 
-    @Value("${spring.datasource.one.password}")
-    private String password;
+    //@Value("${spring.datasource.one.password}")
+    private String password = "junbao@123";
 
-    @Value("${spring.datasource.driver-class-name}")
-    private String driverClassName;
+    //@Value("${spring.datasource.driver-class-name}")
+    private String driverClassName = "org.postgresql.Driver";
 
     @Value("${spring.datasource.initialSize}")
     private int initialSize;

@@ -18,7 +18,7 @@ public class ZookeeperLock implements Lock{
 	private static final String ZKURL = "localhost:2181";
 	
 	private ZkClient zkClient = new ZkClient(ZKURL,1000,1000,new SerializableSerializer());
-	
+	//信号灯
 	private CountDownLatch cdl;
 	//当前节点的前一个节点
 	private String beforePoint;
@@ -49,6 +49,7 @@ public class ZookeeperLock implements Lock{
 			public void handleDataDeleted(String arg0) throws Exception {
 				// TODO Auto-generated method stub
 				if(cdl != null){
+					//将信号等里面的1改变：信号灯变绿
 					cdl.countDown();
 					System.out.println(Thread.currentThread().getName()+"绿灯");
 				}
@@ -64,6 +65,7 @@ public class ZookeeperLock implements Lock{
 		this.zkClient.subscribeDataChanges(beforePoint, dataListener);
 		//给排在前面的节点增加数据删除的watcher  本质是启动另外一个线程去监听前置节点
 		if(this.zkClient.exists(beforePoint)){
+			//信号灯打开红灯：等待
 			cdl = new CountDownLatch(1);
 			try {
 				System.err.println("等待"+Thread.currentThread().getName());
@@ -79,31 +81,21 @@ public class ZookeeperLock implements Lock{
 		//如果拿到当前的节点为空，则尝试加锁
 		if(currentPoint == null || currentPoint.length()<=0){
 			currentPoint = this.zkClient.createEphemeralSequential(LOCK_PATH+"/", "lock");
-			System.out.println("tryLock当前节点为-----------------------"+currentPoint);
 		}
 		List<String>children = this.zkClient.getChildren(LOCK_PATH);
 		Collections.sort(children);
 		if(currentPoint.equals(LOCK_PATH+"/"+children.get(0))){
 			return true;
 		}else{
-			System.out.println("before准备"+currentPoint.substring(6));
 			int beforeNumber = Collections.binarySearch(children, currentPoint.substring(6));
-			System.out.println("current下标"+beforeNumber);
 			beforePoint = LOCK_PATH+"/"+children.get(beforeNumber-1);
-			System.out.println("前置节点为："+beforePoint);
 		}
 		return false;
 	}
 	
 	
 	public void unlock(){
-		if(currentPoint != null){
-			if(zkClient.delete(currentPoint)){
-				System.out.println("节点删除成功"+currentPoint);
-			}else{
-				System.out.println("节点删除失败"+currentPoint);
-			}
-		}
+		zkClient.delete(currentPoint);
 	}
 
 	@Override
