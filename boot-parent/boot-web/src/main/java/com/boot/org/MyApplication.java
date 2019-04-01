@@ -15,7 +15,6 @@ import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 @EnableDubboConfiguration
 public class MyApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(MyApplication.class, args);
 	}
@@ -23,10 +22,10 @@ public class MyApplication extends SpringBootServletInitializer implements Comma
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(MyApplication.class);
     }
-
+	
 	@Override
 	public void run(String... arg0) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("启动完成！");
+		System.out.println("dubbo提供者--启动完成！");
 	}
 }

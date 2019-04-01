@@ -16,6 +16,7 @@
 		<module>boot-service</module>
 		<module>boot-web</module>
 		<module>boot-consumer</module>
+		<module>boot-configcenter</module>
 	</modules>
 	
 	

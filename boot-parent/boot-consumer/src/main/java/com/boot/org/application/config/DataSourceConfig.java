@@ -27,16 +27,19 @@ public class DataSourceConfig {
 	// 扫描dao包
     static final String DAOPACKAGE = "com.boot.org.dao";
   //@Value("${spring.datasource.one.url}")
-    private String url = "jdbc:postgresql://47.92.81.255:5432/operation";
-
-    //@Value("${spring.datasource.one.username}")
-    private String username = "jubaoadmin123";
+    //"jdbc:postgresql://47.92.81.255:5432/business"
+    protected static String url = "";
+	//@Value("${spring.datasource.one.username}")
+    //"jubaoadmin123"
+    protected static String username = "";
 
     //@Value("${spring.datasource.one.password}")
-    private String password = "junbao@123";
+    //"junbao@123"
+    protected static String password = "";
 
     //@Value("${spring.datasource.driver-class-name}")
-    private String driverClassName = "org.postgresql.Driver";
+    //"org.postgresql.Driver"
+    protected static String driverClassName = "";
 
     @Value("${spring.datasource.initialSize}")
     private int initialSize;
@@ -75,10 +78,11 @@ public class DataSourceConfig {
     @Primary
     public DataSource getDataSource() {
         DruidDataSource druidDataSource = new DruidDataSource();
-        druidDataSource.setUrl(this.url);
+        druidDataSource.setUrl(DataSourceConfig.url);
         druidDataSource.setUsername(username);
         druidDataSource.setPassword(password);
         druidDataSource.setDriverClassName(driverClassName);
+        System.out.println("消费者数据库连接获取"+DataSourceConfig.url);
         // druid配置
         druidDataSource.setInitialSize(initialSize);
         druidDataSource.setMaxActive(maxActive);
@@ -124,4 +128,38 @@ public class DataSourceConfig {
     public DataSourceTransactionManager defaultAnnotationDrivenTransactionManager(){
         return new DataSourceTransactionManager(getDataSource());
     }
+
+	public static String getUrl() {
+		return url;
+	}
+
+	public static void setUrl(String url) {
+		DataSourceConfig.url = url;
+	}
+
+	public static String getUsername() {
+		return username;
+	}
+
+	public static void setUsername(String username) {
+		DataSourceConfig.username = username;
+	}
+
+	public static String getPassword() {
+		return password;
+	}
+
+	public static void setPassword(String password) {
+		DataSourceConfig.password = password;
+	}
+
+	public static String getDriverClassName() {
+		return driverClassName;
+	}
+
+	public static void setDriverClassName(String driverClassName) {
+		DataSourceConfig.driverClassName = driverClassName;
+	}
+    
+    
 }
