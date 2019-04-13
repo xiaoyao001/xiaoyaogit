@@ -21,21 +21,21 @@ import com.alibaba.druid.pool.DruidDataSource;
 
 @Configuration
 @MapperScan(basePackages = DataSourceConfig.DAOPACKAGE,sqlSessionFactoryRef = "defaultSqlSessionFactory")
-public class DataSourceConfig {
+public class DataSourceConfig{
 
 	// 扫描dao包
     static final String DAOPACKAGE = "com.boot.org.dao";
     //@Value("${spring.datasource.one.url}")
-    private String url = "jdbc:postgresql://47.92.81.255:5432/operation";
+    private String url = "";
     
     //@Value("${spring.datasource.one.username}")
-    private String username = "jubaoadmin123";
+    private String username = "";
 
     //@Value("${spring.datasource.one.password}")
-    private String password = "junbao@123";
+    private String password = "";
 
     //@Value("${spring.datasource.driver-class-name}")
-    private String driverClassName = "org.postgresql.Driver";
+    private String driverClassName = "";
 
     @Value("${spring.datasource.initialSize}")
     private int initialSize;

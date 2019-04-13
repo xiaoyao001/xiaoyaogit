@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.boot.org.common.ConfigCenter;
+import com.boot.org.common.ResouceReadUtil;
 import com.boot.org.service.configcenter.DataSourceService;
 
 @Service(version="junbao-1.0.0",interfaceClass=DataSourceService.class,timeout=5000)
@@ -16,10 +17,10 @@ public class DataSourceServiceImpl implements DataSourceService{
 	public ConfigCenter getConfigProperties() {
 		// TODO Auto-generated method stub
 		ConfigCenter configCenter = new ConfigCenter(
-				"jdbc:postgresql://47.92.107.201:5432/pre_operation", 
-				"jubaoadmin123", 
-				"junbao@123", 
-				"org.postgresql.Driver");
+				ResouceReadUtil.get("JUNBAO_URL"), 
+				ResouceReadUtil.get("JUNABO_USERNAME"), 
+				ResouceReadUtil.get("JUNABO_PASSWORD"), 
+				ResouceReadUtil.get("JUNBAO_DRIVER"));
 		return configCenter;
 	}
 
