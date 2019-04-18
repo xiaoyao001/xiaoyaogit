@@ -11,20 +11,43 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
-@Configuration
+@Component
+@ConfigurationProperties(prefix="application.properties")
 @MapperScan(basePackages = DataSourceConfig.DAOPACKAGE, 
 sqlSessionFactoryRef = "defaultSqlSessionFactory")
+//@RefreshScope
 public class DataSourceConfig{
 	
+	
+	private static DataSourceConfig INSTANCE;
+	
+	
+	public DataSourceConfig(){}
+	
+	
+	public DataSourceConfig getInstance(){
+		if(INSTANCE == null){
+			synchronized (DataSourceConfig.class) {
+				if(INSTANCE == null){
+					INSTANCE = new DataSourceConfig();
+				}
+			}
+		}
+		return INSTANCE;
+	}
+	
 
+	
 	// 扫描dao包
     static final String DAOPACKAGE = "com.boot.org.dao";
 
@@ -75,7 +98,9 @@ public class DataSourceConfig{
     
     @Bean(name = "dataSource")
     @Primary
+    @RefreshScope
     public DataSource getDataSource() {
+    	System.out.println("热加载数据源配置");
         DruidDataSource druidDataSource = new DruidDataSource();
         druidDataSource.setUrl(url);
         druidDataSource.setUsername(username);
@@ -102,6 +127,7 @@ public class DataSourceConfig{
     
     @Bean(name = "defaultSqlSessionFactory")
     @Primary
+    @RefreshScope
     public SqlSessionFactory sqlSessionFactoryBean(@Qualifier("dataSource") DataSource dataSource) {
         SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);

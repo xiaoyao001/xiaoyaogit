@@ -41,11 +41,13 @@ public class ResouceWriteUtil {
 		prop.setProperty("spring.datasource.connectionProperties", "druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500");
 		prop.setProperty("spring.http.multipart.maxFileSize", "100Mb");
 		prop.setProperty("spring.http.multipart.maxRequestSize", "1000Mb");
-		prop.setProperty("server.port", "8080");
+		prop.setProperty("server.port", "1010");
 		prop.setProperty("spring.dubbo.appname", "boot-web");
 		prop.setProperty("spring.dubbo.protocol", "dubbo");
 		prop.setProperty("spring.dubbo.registry", "zookeeper://127.0.0.1:2181");
 		prop.setProperty("spring.dubbo.port", "20900");
+		prop.setProperty("spring.cloud.config", "false");
+		prop.setProperty("management.security.enabled", "false");
 		return prop;
 	}
 

@@ -8,8 +8,6 @@ import org.I0Itec.zkclient.exception.ZkMarshallingError;
 import org.I0Itec.zkclient.serialize.SerializableSerializer;
 import org.I0Itec.zkclient.serialize.ZkSerializer;
 
-import com.boot.org.application.config.DataSourceConfig;
-
 /**
  * 观察者示例
  * @author xiaoyao

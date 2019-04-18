@@ -140,7 +140,7 @@ public class BootMvcConfig implements WebMvcConfigurer{
 	     * 为True时优先使用.后面指定的类型
 	     * 默认为True
 	     */
-	    configurer.favorPathExtension(false);
+	    configurer.favorPathExtension(true);
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class BootMvcConfig implements WebMvcConfigurer{
 	     * 如果设置成False，那么对于这种请求不会进行映射。
 	     *
 	     */
-	    configurer.setUseSuffixPatternMatch(true);
+	    configurer.setUseSuffixPatternMatch(false);
 
 	    /**
 	     * 设置路径后是否包含/
@@ -194,7 +194,7 @@ public class BootMvcConfig implements WebMvcConfigurer{
 	     * 只有在访问/test.pdf时才能正常访问，其它任何的/test.txt或者/test.doc等均会报404； 
 	     * 默认情况下该值是False
 	     */
-	    configurer.setUseRegisteredSuffixPatternMatch(true);
+	    configurer.setUseRegisteredSuffixPatternMatch(false);
 	}
 
 	@Override

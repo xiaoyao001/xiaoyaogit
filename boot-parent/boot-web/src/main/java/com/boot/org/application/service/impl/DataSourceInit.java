@@ -16,8 +16,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import com.boot.org.application.config.DataSourceConfig;
 import com.boot.org.test.ResouceWriteUtil;
+
 
 /**
  * tomcat服务启动默认加载项
@@ -27,11 +27,15 @@ import com.boot.org.test.ResouceWriteUtil;
  */
 
 @Component
+//@RefreshScope
 public class DataSourceInit implements ServletContextListener, ApplicationContextAware {
 
 	private static final String ZKURL = "localhost:2181";
 
 	private ZkClient zkClient = new ZkClient(ZKURL, 1000, 1000, new SerializableSerializer());
+	
+	/*@Autowired
+	private org.springframework.cloud.context.scope.refresh.RefreshScope refreshScope;*/
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -91,7 +95,6 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 	
 	
 	private void readZooData(ZkClient zkClient){
-		
 		try {
 			ResouceWriteUtil.writeResource(zkClient);
 		} catch (IOException e) {
@@ -101,12 +104,10 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 	}
 	
 	
+	//@RefreshScope
 	private void reloadZooData(ZkClient zkClient){
-		DataSourceConfig dataSourceConfig = new DataSourceConfig();
-		dataSourceConfig.setUrl(zkClient.readData("/config/pre/datasource/url").toString());
-		dataSourceConfig.setDriverClassName(zkClient.readData("/config/pre/datasource/driver").toString());
-		dataSourceConfig.setUsername(zkClient.readData("/config/pre/datasource/username").toString());
-		dataSourceConfig.setPassword(zkClient.readData("/config/pre/datasource/password").toString());	
+		//System.out.println(refreshScope.refresh("dataSource"));
+		
 	}
 	
 	
@@ -116,4 +117,5 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 		zkClient.subscribeDataChanges("/config/pre/datasource/username", dataListener);
 		zkClient.subscribeDataChanges("/config/pre/datasource/password", dataListener);
 	}
+	
 }

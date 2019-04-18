@@ -15,10 +15,11 @@ import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 @EnableDubboConfiguration
 public class MyApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
+	
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(MyApplication.class, args);
-		Thread.currentThread().join();
 	}
+	
 	
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(MyApplication.class);
