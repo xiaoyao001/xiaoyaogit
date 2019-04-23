@@ -12,7 +12,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -21,30 +20,11 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
+
 @Component
-@ConfigurationProperties(prefix="application.properties")
-@MapperScan(basePackages = DataSourceConfig.DAOPACKAGE, 
-sqlSessionFactoryRef = "defaultSqlSessionFactory")
-//@RefreshScope
+@ConfigurationProperties(prefix="spring")
+@MapperScan(basePackages = DataSourceConfig.DAOPACKAGE, sqlSessionFactoryRef = "defaultSqlSessionFactory")
 public class DataSourceConfig{
-	
-	
-	private static DataSourceConfig INSTANCE;
-	
-	
-	public DataSourceConfig(){}
-	
-	
-	public DataSourceConfig getInstance(){
-		if(INSTANCE == null){
-			synchronized (DataSourceConfig.class) {
-				if(INSTANCE == null){
-					INSTANCE = new DataSourceConfig();
-				}
-			}
-		}
-		return INSTANCE;
-	}
 	
 
 	
@@ -61,7 +41,7 @@ public class DataSourceConfig{
     private String password;
     
     @Value("${spring.datasource.driver-class-name}")
-    private String driverClassName = "";
+    private String driverClassName;
 
     @Value("${spring.datasource.initialSize}")
     private int initialSize;
@@ -94,13 +74,12 @@ public class DataSourceConfig{
     private String filters;
 
     @Value("${spring.datasource.connectionProperties}")
-    private Properties connectionProperties;
+    private static Properties connectionProperties;
     
     @Bean(name = "dataSource")
     @Primary
-    @RefreshScope
     public DataSource getDataSource() {
-    	System.out.println("热加载数据源配置");
+    	System.out.println("热加载数据源配置::::加载getDataSource");
         DruidDataSource druidDataSource = new DruidDataSource();
         druidDataSource.setUrl(url);
         druidDataSource.setUsername(username);
@@ -127,8 +106,8 @@ public class DataSourceConfig{
     
     @Bean(name = "defaultSqlSessionFactory")
     @Primary
-    @RefreshScope
     public SqlSessionFactory sqlSessionFactoryBean(@Qualifier("dataSource") DataSource dataSource) {
+    	System.out.println("加载sqlSessionFactoryBean");
         SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -144,12 +123,14 @@ public class DataSourceConfig{
     @Bean(name = "defaultSqlSessionTemplate")
     @Primary
     public SqlSessionTemplate defaultSqlSessionTemplate(SqlSessionFactory sqlSessionFactory){
+    	System.out.println("加载defaultSqlSessionTemplate");
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
     @Bean(name = "defaultTransactionManager")
     @Primary
     public DataSourceTransactionManager defaultAnnotationDrivenTransactionManager(){
+    	System.out.println("加载defaultAnnotationDrivenTransactionManager");
         return new DataSourceTransactionManager(getDataSource());
     }
 
@@ -184,5 +165,93 @@ public class DataSourceConfig{
 	public void setDriverClassName(String driverClassName) {
 		this.driverClassName = driverClassName;
 	}
-    
+
+	public int getInitialSize() {
+		return initialSize;
+	}
+
+	public void setInitialSize(int initialSize) {
+		this.initialSize = initialSize;
+	}
+
+	public int getMaxActive() {
+		return maxActive;
+	}
+
+	public void setMaxActive(int maxActive) {
+		this.maxActive = maxActive;
+	}
+
+	public boolean isRemoveAbandoned() {
+		return removeAbandoned;
+	}
+
+	public void setRemoveAbandoned(boolean removeAbandoned) {
+		this.removeAbandoned = removeAbandoned;
+	}
+
+	public int getRemoveAbandonedTimeout() {
+		return removeAbandonedTimeout;
+	}
+
+	public void setRemoveAbandonedTimeout(int removeAbandonedTimeout) {
+		this.removeAbandonedTimeout = removeAbandonedTimeout;
+	}
+
+	public int getTimeBetweenEvictionRunsMillis() {
+		return timeBetweenEvictionRunsMillis;
+	}
+
+	public void setTimeBetweenEvictionRunsMillis(int timeBetweenEvictionRunsMillis) {
+		this.timeBetweenEvictionRunsMillis = timeBetweenEvictionRunsMillis;
+	}
+
+	public String getValidationQuery() {
+		return validationQuery;
+	}
+
+	public void setValidationQuery(String validationQuery) {
+		this.validationQuery = validationQuery;
+	}
+
+	public boolean isTestWhileIdle() {
+		return testWhileIdle;
+	}
+
+	public void setTestWhileIdle(boolean testWhileIdle) {
+		this.testWhileIdle = testWhileIdle;
+	}
+
+	public boolean isTestOnBorrow() {
+		return testOnBorrow;
+	}
+
+	public void setTestOnBorrow(boolean testOnBorrow) {
+		this.testOnBorrow = testOnBorrow;
+	}
+
+	public boolean isTestOnReturn() {
+		return testOnReturn;
+	}
+
+	public void setTestOnReturn(boolean testOnReturn) {
+		this.testOnReturn = testOnReturn;
+	}
+
+	public String getFilters() {
+		return filters;
+	}
+
+	public void setFilters(String filters) {
+		this.filters = filters;
+	}
+
+	public static Properties getConnectionProperties() {
+		return connectionProperties;
+	}
+
+	public static void setConnectionProperties(Properties connectionProperties) {
+		DataSourceConfig.connectionProperties = connectionProperties;
+	}
+
 }

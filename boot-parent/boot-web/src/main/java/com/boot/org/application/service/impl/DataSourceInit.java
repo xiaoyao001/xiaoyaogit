@@ -27,15 +27,12 @@ import com.boot.org.test.ResouceWriteUtil;
  */
 
 @Component
-//@RefreshScope
 public class DataSourceInit implements ServletContextListener, ApplicationContextAware {
 
 	private static final String ZKURL = "localhost:2181";
 
 	private ZkClient zkClient = new ZkClient(ZKURL, 1000, 1000, new SerializableSerializer());
-	
-	/*@Autowired
-	private org.springframework.cloud.context.scope.refresh.RefreshScope refreshScope;*/
+
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -73,7 +70,7 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 				}
 			}
 		});
-		readZooData(zkClient);
+		//readZooData(zkClient);
 		//System.out.println("初始化"+DataSourceConfig.getDriverClassName());
 		IZkDataListener dataListener = new IZkDataListener() {
 			@Override
@@ -81,7 +78,7 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 				// TODO Auto-generated method stub
 				System.out.println("客户机监听到zookeeper改变");
 				readZooData(zkClient);
-				reloadZooData(zkClient);
+				//reloadZooData(zkClient);
 			}
 			@Override
 			public void handleDataDeleted(String dataPath) throws Exception {
@@ -96,7 +93,7 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 	
 	private void readZooData(ZkClient zkClient){
 		try {
-			ResouceWriteUtil.writeResource(zkClient);
+		 new ResouceWriteUtil().writeResource(zkClient);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,10 +101,13 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 	}
 	
 	
-	//@RefreshScope
+	
 	private void reloadZooData(ZkClient zkClient){
-		//System.out.println(refreshScope.refresh("dataSource"));
-		
+		/*DataSourceConfig dataSourceConfig = DataSourceConfig.getInstance();
+		dataSourceConfig.setUrl(zkClient.readData("/config/pre/datasource/url").toString());
+		dataSourceConfig.setPassword(zkClient.readData("/config/pre/datasource/password").toString());
+		dataSourceConfig.setUsername(zkClient.readData("/config/pre/datasource/username").toString());
+		dataSourceConfig.setDriverClassName(zkClient.readData("/config/pre/datasource/driver").toString());*/
 	}
 	
 	

@@ -19,6 +19,7 @@ public class MyApplication extends SpringBootServletInitializer implements Comma
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(MyApplication.class, args);
 	}
+
 	
 	
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
