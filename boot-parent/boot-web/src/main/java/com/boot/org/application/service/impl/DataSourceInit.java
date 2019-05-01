@@ -1,6 +1,5 @@
 package com.boot.org.application.service.impl;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.ServletContextEvent;
@@ -11,9 +10,7 @@ import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.exception.ZkMarshallingError;
 import org.I0Itec.zkclient.serialize.SerializableSerializer;
 import org.I0Itec.zkclient.serialize.ZkSerializer;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.boot.org.test.ResouceWriteUtil;
@@ -27,18 +24,14 @@ import com.boot.org.test.ResouceWriteUtil;
  */
 
 @Component
-public class DataSourceInit implements ServletContextListener, ApplicationContextAware {
+public class DataSourceInit implements ServletContextListener{
 
 	private static final String ZKURL = "localhost:2181";
 
 	private ZkClient zkClient = new ZkClient(ZKURL, 1000, 1000, new SerializableSerializer());
-
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		// TODO Auto-generated method stub
-
-	}
+	
+	@Autowired
+	private ResouceWriteUtil resouceWriteUtil;
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
@@ -77,8 +70,8 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 			public void handleDataChange(String dataPath, Object data) throws Exception {
 				// TODO Auto-generated method stub
 				System.out.println("客户机监听到zookeeper改变");
+				reloadZooData(zkClient);
 				readZooData(zkClient);
-				//reloadZooData(zkClient);
 			}
 			@Override
 			public void handleDataDeleted(String dataPath) throws Exception {
@@ -93,8 +86,8 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 	
 	private void readZooData(ZkClient zkClient){
 		try {
-		 new ResouceWriteUtil().writeResource(zkClient);
-		} catch (IOException e) {
+			resouceWriteUtil.writeResource(zkClient);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -103,11 +96,16 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 	
 	
 	private void reloadZooData(ZkClient zkClient){
-		/*DataSourceConfig dataSourceConfig = DataSourceConfig.getInstance();
-		dataSourceConfig.setUrl(zkClient.readData("/config/pre/datasource/url").toString());
-		dataSourceConfig.setPassword(zkClient.readData("/config/pre/datasource/password").toString());
-		dataSourceConfig.setUsername(zkClient.readData("/config/pre/datasource/username").toString());
-		dataSourceConfig.setDriverClassName(zkClient.readData("/config/pre/datasource/driver").toString());*/
+		/*
+		 * DataSourceConfig dataSourceConfig = DataSourceConfig.getInstance();
+		 * dataSourceConfig.setUrl(zkClient.readData("/config/pre/datasource/url").
+		 * toString()); dataSourceConfig.setPassword(zkClient.readData(
+		 * "/config/pre/datasource/password").toString());
+		 * dataSourceConfig.setUsername(zkClient.readData(
+		 * "/config/pre/datasource/username").toString());
+		 * dataSourceConfig.setDriverClassName(zkClient.readData(
+		 * "/config/pre/datasource/driver").toString());
+		 */
 	}
 	
 	
@@ -117,5 +115,5 @@ public class DataSourceInit implements ServletContextListener, ApplicationContex
 		zkClient.subscribeDataChanges("/config/pre/datasource/username", dataListener);
 		zkClient.subscribeDataChanges("/config/pre/datasource/password", dataListener);
 	}
-	
+
 }

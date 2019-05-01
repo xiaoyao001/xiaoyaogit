@@ -9,6 +9,7 @@
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src/main/java">
@@ -31,6 +32,12 @@
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path=".apt_generated_tests">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>

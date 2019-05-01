@@ -11,20 +11,35 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
 
-@Component
-@ConfigurationProperties(prefix="spring")
+@Configuration
 @MapperScan(basePackages = DataSourceConfig.DAOPACKAGE, sqlSessionFactoryRef = "defaultSqlSessionFactory")
 public class DataSourceConfig{
+	
+	
+	private static DataSourceConfig INSTANCE;
+	
+	
+	public DataSourceConfig() {}
+	
+	public static DataSourceConfig getInstance() {
+		if(INSTANCE == null) {
+			synchronized (DataSourceConfig.class) {
+				if(INSTANCE == null) {
+					return new DataSourceConfig();
+				}
+			}
+		}
+		return INSTANCE;
+	}
 	
 
 	

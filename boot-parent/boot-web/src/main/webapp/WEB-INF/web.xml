@@ -3,10 +3,9 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
-  
-  <listener>
-  	<listener-class>com.boot.org.application.service.impl.DataSourceInit</listener-class>
-  </listener>
-  
+	<display-name>Archetype Created Web Application</display-name>
+
+	<listener>
+		<listener-class>com.boot.org.application.service.impl.DataSourceInit</listener-class>
+	</listener>
 </web-app>

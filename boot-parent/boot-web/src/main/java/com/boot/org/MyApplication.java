@@ -11,7 +11,7 @@ import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 
 //dubbo提供者
 @SpringBootApplication
-@MapperScan("com.boot.org.dao")
+@MapperScan(basePackages = {"com.boot.org.dao"})
 @EnableDubboConfiguration
 public class MyApplication extends SpringBootServletInitializer implements CommandLineRunner {
 

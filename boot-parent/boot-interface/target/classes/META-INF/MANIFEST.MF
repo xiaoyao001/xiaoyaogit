@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
-Implementation-Vendor: Pivotal Software, Inc.
 Implementation-Title: boot-interface
 Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Administrator
 Implementation-Vendor-Id: com.boot.org
-Build-Jdk: 1.7.0_67
-Built-By: lx
-Created-By: Maven Integration for Eclipse
+Build-Jdk: 1.8.0_211
 Implementation-URL: http://maven.apache.org
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
 
