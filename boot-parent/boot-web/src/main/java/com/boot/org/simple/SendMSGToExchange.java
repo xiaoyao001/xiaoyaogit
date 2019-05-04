@@ -1,28 +1,16 @@
 package com.boot.org.simple;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 
-/**
- * 消息发送者
- * @author xiaoyao
- *
- */
-public class SendMSG {
+public class SendMSGToExchange {
 	
-	private static final String QUEUE_NAME = "simple_queue";
-	
-	private static final boolean durable = true;
-	
-	private static final boolean exclusive = false;
-	
-	private static final boolean autoDelete = false;
-	
-	private static final Map<String, Object> arguments = null;
+	private static final String EXCHANG_ENAME = "test_exchange";
+	/**fanout不处理路由键*/
+	private static final String EXCHANG_ETYPE = "direct";
 
 	public static void main(String[] args) throws InterruptedException {
 		Connection connection = null;
@@ -32,13 +20,17 @@ public class SendMSG {
 			connection = MQConnectUtil.getMqConnectUtil();
 			//从链接中获取一个通道
 			channel = connection.createChannel();
-			//创建队列-----设置消息的持久化
-			channel.queueDeclare(QUEUE_NAME, durable, exclusive, autoDelete, arguments);	
-			//提供者一次只发5个
+			//创建交换机
+			channel.exchangeDeclare(EXCHANG_ENAME, EXCHANG_ETYPE);
 			channel.basicQos(5);
 			for(int i =0;i<50;i++) {
 				String msg = "我发送的第"+(i+1)+"的一个请求";
-				channel.basicPublish("", QUEUE_NAME, null, msg.getBytes());
+				if(i%2==0) {
+					channel.basicPublish(EXCHANG_ENAME, "one_key", null, msg.getBytes());
+				}else {
+					channel.basicPublish(EXCHANG_ENAME, "two_key", null, msg.getBytes());
+				}
+				
 				System.out.println("消息发送成功");
 				Thread.sleep(i*20);
 			}
@@ -51,7 +43,7 @@ public class SendMSG {
 				connection.close();
 			} catch (IOException | TimeoutException e) {
 				// TODO Auto-generated catch block
-				System.out.println("关闭mq队列异常");
+				System.out.println("关闭mq异常");
 			}
 			
 		}
