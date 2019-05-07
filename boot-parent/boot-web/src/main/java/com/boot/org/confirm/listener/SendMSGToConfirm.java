@@ -11,6 +11,8 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConfirmListener;
 import com.rabbitmq.client.Connection;
 
+import net.sf.json.JSONObject;
+
 /**
  * 普通模式
  * 
@@ -33,7 +35,7 @@ public class SendMSGToConfirm {
 			channel = connection.createChannel();
 			// 交换机
 			channel.exchangeDeclare(EXCHANG_ENAME, EXCHANG_ETYPE);
-			channel.basicQos(5);
+			//channel.basicQos(10);
 			//开启事务模式
 			channel.confirmSelect();
 			
@@ -47,9 +49,11 @@ public class SendMSGToConfirm {
 					// TODO Auto-generated method stub
 					if(multiple) {
 						System.out.println("---handAck--multiple--");
-						confirmSet.headSet(deliveryTag+1).clear();
+						System.out.println(deliveryTag+"::"+multiple);
+						confirmSet.headSet(deliveryTag).clear();
 					}else {
 						System.out.println("---handAck--multiple--false");
+						System.out.println(deliveryTag+"::"+multiple);
 						confirmSet.remove(deliveryTag);
 					}
 				}
@@ -58,9 +62,11 @@ public class SendMSGToConfirm {
 				public void handleNack(long deliveryTag, boolean multiple) throws IOException {
 					if(multiple) {
 						System.out.println("---handNack--multiple--");
-						confirmSet.headSet(deliveryTag+1).clear();
+						System.out.println(deliveryTag+"::"+multiple+JSONObject.fromObject(confirmSet));
+						confirmSet.headSet(deliveryTag).clear();
 					}else {
 						System.out.println("---handNack--multiple--false");
+						System.out.println(deliveryTag+"::"+multiple+JSONObject.fromObject(confirmSet));
 						confirmSet.remove(deliveryTag);
 					}
 				}
@@ -77,12 +83,16 @@ public class SendMSGToConfirm {
 					channel.basicPublish(EXCHANG_ENAME, "goods.take", null, msg.getBytes());
 					confirmSet.add(seqNo);
 				}
+				if(!channel.waitForConfirms()) {
+					System.err.println("消息发送失败");
+				}else {
+					System.out.println("消息发送成功");
+				}
 				Thread.sleep(i * 20);
 			}
-			if(!channel.waitForConfirms()) {
-				System.err.println("消息发送失败");
-			}else {
-				System.out.println("消息发送成功");
+			
+			for(Long lons:confirmSet) {
+				System.out.println(lons);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

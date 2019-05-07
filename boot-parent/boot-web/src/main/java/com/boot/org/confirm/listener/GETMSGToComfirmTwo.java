@@ -36,7 +36,7 @@ public class GETMSGToComfirmTwo {
 			channel.queueBind(QUEUE_NAME, EXCHANG_ENAME, "goods.take");
 			// 消息应答
 			boolean autoAck = false;
-			//channel.basicQos(5);
+			channel.basicQos(0, 5, false);
 			// 监听队列//定义一个 consumer消费者
 			channel.basicConsume(QUEUE_NAME, autoAck, new DefaultConsumer(channel) {
 				@Override
