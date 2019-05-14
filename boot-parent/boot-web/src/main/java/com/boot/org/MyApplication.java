@@ -21,7 +21,6 @@ public class MyApplication extends SpringBootServletInitializer implements Comma
 	}
 
 	
-	
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(MyApplication.class);
     }
