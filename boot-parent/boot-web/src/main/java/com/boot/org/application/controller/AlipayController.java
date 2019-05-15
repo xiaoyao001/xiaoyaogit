@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.domain.AlipayTradePrecreateModel;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.boot.org.alipay.AliPayConfig;
 
@@ -28,18 +27,18 @@ public class AlipayController {
 		JSONObject bodyJson = new JSONObject();
 		bodyJson.put("out_trade_no", System.currentTimeMillis());
 		bodyJson.put("product_code", "FAST_INSTANT_TRADE_PAY");
-		bodyJson.put("total_amount", "0.01");
+		bodyJson.put("total_amount", "15000.00");
 		bodyJson.put("subject", "苹果");
 		bodyJson.put("body", "一个大苹果");
 		//创建API对应的request
 		AlipayTradePagePayRequest payRequest = new AlipayTradePagePayRequest();
-		AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
-		payRequest.setReturnUrl(AliPayConfig.RETURN_URL+"alipay/callback");
+		//AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
+		payRequest.setReturnUrl(AliPayConfig.RETURN_URL+"alipay/returnUrl");
 		payRequest.setNotifyUrl(AliPayConfig.NOTIFY_URL+"alipay/callback");
-		model.setOutTradeNo(String.valueOf(System.currentTimeMillis()));
-		model.setTotalAmount("0.01");
-		model.setSubject("苹果");
-		payRequest.setBizModel(model);
+//		model.setOutTradeNo(String.valueOf(System.currentTimeMillis()));
+//		model.setTotalAmount("0.01");
+//		model.setSubject("苹果");
+		//payRequest.setBizModel(model);
 		payRequest.setBizContent(bodyJson.toString());
 		String form = null;
 		try {
@@ -56,8 +55,17 @@ public class AlipayController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/callback")
-	public void payActionCallBack(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("回调接口被触发");
+	public void payActionCallBack(HttpServletRequest request, HttpServletResponse response,String id) {
+		System.out.println("callback接口被触发"+id);
 	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/returnUrl")
+	public void returnUrl(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("returnUrl接口被触发");
+	}
+	
 
 }
