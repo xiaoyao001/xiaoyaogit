@@ -8,4 +8,7 @@
 	<listener>
 		<listener-class>com.boot.org.application.service.impl.DataSourceInit</listener-class>
 	</listener>
+	<!-- <listener>
+		<listener-class>com.boot.org.application.queue.ConsumerQueue</listener-class>
+	</listener> -->
 </web-app>
