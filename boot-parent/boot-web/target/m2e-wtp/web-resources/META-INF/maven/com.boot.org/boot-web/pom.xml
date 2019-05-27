@@ -41,7 +41,7 @@
 	                    <groupId>log4j</groupId>
 	                    <artifactId>log4j</artifactId>
 	                </exclusion>
-	            </exclusions>
+	         </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.github.sgroschupf</groupId>

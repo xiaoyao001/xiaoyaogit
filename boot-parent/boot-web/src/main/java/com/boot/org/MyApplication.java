@@ -16,7 +16,7 @@ import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 public class MyApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
 	
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args){
 		SpringApplication.run(MyApplication.class, args);
 	}
 

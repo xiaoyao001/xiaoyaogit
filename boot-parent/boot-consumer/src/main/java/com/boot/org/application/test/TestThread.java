@@ -1,5 +1,7 @@
 package com.boot.org.application.test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.boot.org.common.HttpConnect;
@@ -7,8 +9,9 @@ import com.boot.org.common.HttpConnect;
 public class TestThread {
 
 	public static void main(String[] args) throws Exception {
-		for(int i =0;i<10;i++) {
-			Thread thread = new Thread(new Runnable() {
+		final List<String>resultList = new ArrayList<String>();
+		for(int i =0;i<30;i++) {
+			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
@@ -17,15 +20,18 @@ public class TestThread {
 						UUID id = UUID.randomUUID();
 						result = HttpConnect.connectServerGet("http://127.0.0.1:1010/bus/queue?orderNo="+id);
 						System.err.println("请求号码为"+id+"的消费者请求得到的结果：：："+result);
+						resultList.add(result);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.out.println("连接异常："+e);
 					}
-					
 				}
-			});
-			thread.start();
-			Thread.sleep(1000);
+			}).start();
+			Thread.sleep(1);
+		}
+		while(true) {
+			System.out.println("总投保用户数量：：：："+resultList.size());
+			Thread.sleep(2000);
 		}
 	}
 }
