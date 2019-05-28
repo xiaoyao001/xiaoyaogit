@@ -32,7 +32,7 @@ public class ProduceQueue {
 	}
 
 	
-	public void queueStart(List<JSONObject>jsonList,String orderNo) {
+	public void queueStart(String orderNo,List<JSONObject>jsonList) {
 		for(JSONObject objs:jsonList) {
 			try {
 				queue.put(objs);
@@ -42,5 +42,10 @@ public class ProduceQueue {
 			}
 		}
 		produceQueueCacheMap.put(orderNo, queue);
+	}
+	
+	
+	public static void produceDestroy(String orderNo) {
+		ProduceQueue.produceQueueCacheMap.remove(orderNo);
 	}
 }

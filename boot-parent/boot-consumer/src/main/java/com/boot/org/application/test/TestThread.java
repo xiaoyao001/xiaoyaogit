@@ -10,7 +10,7 @@ public class TestThread {
 
 	public static void main(String[] args) throws Exception {
 		final List<String>resultList = new ArrayList<String>();
-		for(int i =0;i<30;i++) {
+		for(int i =0;i<10;i++) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -27,7 +27,7 @@ public class TestThread {
 					}
 				}
 			}).start();
-			Thread.sleep(1);
+			Thread.sleep((int)(50*Math.random()+50));
 		}
 		while(true) {
 			System.out.println("总投保用户数量：：：："+resultList.size());
