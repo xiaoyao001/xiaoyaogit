@@ -5,9 +5,9 @@
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
 
-	<listener>
+	<!-- <listener>
 		<listener-class>com.boot.org.application.service.impl.DataSourceInit</listener-class>
-	</listener>
+	</listener> -->
 	<!-- <listener>
 		<listener-class>com.boot.org.application.queue.ConsumerQueue</listener-class>
 	</listener> -->

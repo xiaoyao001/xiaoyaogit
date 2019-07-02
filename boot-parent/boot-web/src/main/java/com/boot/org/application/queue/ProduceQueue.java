@@ -20,14 +20,11 @@ public class ProduceQueue {
 
 	/**单个请求供应队列声明*/
 	private BlockingQueue<JSONObject>queue;
-	/**单个请求子线程归属的订单号*/
-	private String orderNo;
 	/**线程队列承载平台*/
 	public static Map<String,BlockingQueue<JSONObject>> produceQueueCacheMap = new LinkedHashMap<String,BlockingQueue<JSONObject>>();
 	
 	
-	public ProduceQueue(String orderNo,Integer size) {
-		this.orderNo = orderNo;
+	public ProduceQueue(Integer size) {
 		this.queue = new LinkedBlockingQueue<JSONObject>(size);
 	}
 

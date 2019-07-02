@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.boot.org.application.queue.ConsumerQueue;
 import com.boot.org.application.queue.ProduceQueue;
@@ -16,7 +17,8 @@ import com.boot.org.application.queue.ProduceQueue;
 import net.sf.json.JSONObject;
 
 @Controller
-@RequestMapping(value = "/bus")
+@RequestMapping(value = "/bus",
+produces = {"application/json;charset=UTF-8"})
 public class InitController {
 
 	
@@ -40,7 +42,7 @@ public class InitController {
 		for(int i =0;i<totalPolicyCount;i++) {
 			mapList.add(json);
 		}
-		ProduceQueue produceQueue = new ProduceQueue(orderNo, totalPolicyCount);
+		ProduceQueue produceQueue = new ProduceQueue(totalPolicyCount);
 		produceQueue.queueStart(orderNo,mapList);
 		ConsumerQueue queue = new ConsumerQueue();
 		queue.jobStart(orderNo,totalPolicyCount);

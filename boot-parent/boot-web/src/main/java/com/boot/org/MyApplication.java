@@ -1,6 +1,5 @@
 package com.boot.org;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +10,6 @@ import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 
 //dubbo提供者
 @SpringBootApplication
-@MapperScan(basePackages = {"com.boot.org.dao"})
 @EnableDubboConfiguration
 public class MyApplication extends SpringBootServletInitializer implements CommandLineRunner {
 

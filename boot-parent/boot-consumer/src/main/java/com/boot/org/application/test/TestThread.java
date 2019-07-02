@@ -10,7 +10,7 @@ public class TestThread {
 
 	public static void main(String[] args) throws Exception {
 		final List<String>resultList = new ArrayList<String>();
-		for(int i =0;i<10;i++) {
+		for(int i =0;i<20;i++) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {

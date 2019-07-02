@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.boot.org.InsuranceProductRelation;
-import com.boot.org.application.config.DataSourceConfig;
 import com.boot.org.dao.InsuranceProductRelationMapper;
 import com.boot.org.service.InsuranceProductRelationService;
 
@@ -19,9 +18,6 @@ public class InsuranceProductRelationServiceImpl implements InsuranceProductRela
 
 	@Autowired
 	private InsuranceProductRelationMapper insuranceProductRelationMapper;
-	
-	@Autowired
-	private  DataSourceConfig dataSourceConfig;
 
 	@Override
 	public List<InsuranceProductRelation> relationList(Integer id) {

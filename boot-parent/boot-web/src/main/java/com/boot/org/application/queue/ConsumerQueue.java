@@ -33,7 +33,10 @@ public class ConsumerQueue implements Runnable{
 	}
 	
 	
-	
+	/**
+	 * 争抢过程
+	 * @throws InterruptedException
+	 */
 	private void threadInsurePolicy() throws InterruptedException {
 		System.out.println("consumer开始执行"+Thread.currentThread().getName());
 		JSONObject jsonResult = null;
