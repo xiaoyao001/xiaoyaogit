@@ -41,16 +41,16 @@ public class ThreadTest {
 				Lock lock = new ZookeeperLock();
 				lock.lock();
 				try {
-						if(count >0){
-							System.err.println(Thread.currentThread().getName()+"现在售卖出的票为："+(count--)+"号");	
-						}
+					if(count >0){
+						System.err.println(Thread.currentThread().getName()+"现在售卖出的票为："+(count--)+"号");	
+					}
 				} catch (Exception e) {
 					// TODO: handle exception
 				}finally{
 					lock.unlock();
 				}
 				try {
-					Thread.sleep(500);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -35,7 +35,7 @@ public class SendMSGToConfirm {
 			channel = connection.createChannel();
 			// 交换机
 			channel.exchangeDeclare(EXCHANG_ENAME, EXCHANG_ETYPE);
-			//channel.basicQos(10);
+			channel.basicQos(10);
 			//开启事务模式
 			channel.confirmSelect();
 			

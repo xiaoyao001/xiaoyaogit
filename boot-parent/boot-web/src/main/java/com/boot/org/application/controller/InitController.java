@@ -72,4 +72,5 @@ public class InitController {
 		}
 		return resultJsonObject;
 	}
+	
 }

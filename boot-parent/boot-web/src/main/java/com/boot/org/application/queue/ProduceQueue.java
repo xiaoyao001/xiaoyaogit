@@ -1,10 +1,11 @@
 package com.boot.org.application.queue;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+
 
 import net.sf.json.JSONObject;
 
@@ -21,7 +22,7 @@ public class ProduceQueue {
 	/**单个请求供应队列声明*/
 	private BlockingQueue<JSONObject>queue;
 	/**线程队列承载平台*/
-	public static Map<String,BlockingQueue<JSONObject>> produceQueueCacheMap = new LinkedHashMap<String,BlockingQueue<JSONObject>>();
+	public static Map<String,BlockingQueue<JSONObject>> produceQueueCacheMap = new ConcurrentHashMap<String,BlockingQueue<JSONObject>>();
 	
 	
 	public ProduceQueue(Integer size) {

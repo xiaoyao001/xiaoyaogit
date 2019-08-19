@@ -1,8 +1,8 @@
 package com.boot.org.application.queue;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,7 +15,7 @@ import net.sf.json.JSONObject;
 public class ConsumerQueue implements Runnable{
 
 	/**单个线程的返回值*/
-	public static Map<String, Object> resultList = new HashMap<String, Object>();
+	public static Map<String, Object> resultList = new ConcurrentHashMap<String, Object>();
 	
 	private String orderNo;
 	

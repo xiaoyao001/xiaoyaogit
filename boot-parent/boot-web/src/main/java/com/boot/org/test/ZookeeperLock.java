@@ -68,7 +68,7 @@ public class ZookeeperLock implements Lock{
 			//信号灯打开红灯：等待
 			cdl = new CountDownLatch(1);
 			try {
-				System.err.println("等待"+Thread.currentThread().getName());
+				//System.err.println("等待"+Thread.currentThread().getName());
 				cdl.await();
 			} catch (Exception e) {
 				// TODO: handle exception
