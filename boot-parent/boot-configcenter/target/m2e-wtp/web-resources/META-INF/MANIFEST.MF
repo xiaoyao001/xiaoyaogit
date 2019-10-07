@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: boot-configcenter
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Administrator
+Built-By: 11505
 Implementation-Vendor-Id: com.boot.org
-Build-Jdk: 1.8.0_211
+Build-Jdk: 1.8.0_102
 Implementation-URL: http://projects.spring.io/spring-boot/boot-parent/
  boot-configcenter/
 Created-By: Maven Integration for Eclipse

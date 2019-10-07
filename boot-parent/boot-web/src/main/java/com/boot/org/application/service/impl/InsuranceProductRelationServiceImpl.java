@@ -11,7 +11,7 @@ import com.boot.org.InsuranceProductRelation;
 import com.boot.org.dao.InsuranceProductRelationMapper;
 import com.boot.org.service.InsuranceProductRelationService;
 
-@Service(interfaceClass=InsuranceProductRelationService.class,version="junbao-1.0.0",timeout=10000)//dubbo注解，与spring同名
+//@Service(interfaceClass=InsuranceProductRelationService.class,version="junbao-1.0.0",timeout=10000)//dubbo注解，与spring同名
 @Component
 @Transactional
 public class InsuranceProductRelationServiceImpl implements InsuranceProductRelationService{

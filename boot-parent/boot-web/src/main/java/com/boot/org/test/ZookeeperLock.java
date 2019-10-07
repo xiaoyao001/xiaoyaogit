@@ -15,7 +15,7 @@ public class ZookeeperLock implements Lock{
 
 	private static final String LOCK_PATH = "/LOCK";
 	
-	private static final String ZKURL = "localhost:2181";
+	private static final String ZKURL = "127.0.0.1:2181";
 	
 	private ZkClient zkClient = new ZkClient(ZKURL,1000,1000,new SerializableSerializer());
 	//信号灯
@@ -95,6 +95,7 @@ public class ZookeeperLock implements Lock{
 	
 	
 	public void unlock(){
+		System.out.println("删除当前的顺序节点为："+currentPoint);
 		zkClient.delete(currentPoint);
 	}
 

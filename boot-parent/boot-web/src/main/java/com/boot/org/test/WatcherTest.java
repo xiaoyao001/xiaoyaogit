@@ -15,7 +15,7 @@ import org.I0Itec.zkclient.serialize.ZkSerializer;
  */
 public class WatcherTest {
 	
-	private static final String ZKURL = "localhost:2181";
+	private static final String ZKURL = "192.168.182.11.:2181";
 	
 	private static ZkClient zkClient = new ZkClient(ZKURL,1000,1000,new SerializableSerializer());
 	

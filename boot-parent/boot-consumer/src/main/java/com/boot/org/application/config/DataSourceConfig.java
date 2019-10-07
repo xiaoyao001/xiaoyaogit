@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,26 +19,41 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import com.alibaba.druid.pool.DruidDataSource;
 
 @Configuration
-@MapperScan(basePackages = DataSourceConfig.DAOPACKAGE, 
-sqlSessionFactoryRef = "defaultSqlSessionFactory")
 public class DataSourceConfig {
+	
+	
+	private static DataSourceConfig INSTANCE;
+	
+	
+	public DataSourceConfig() {}
+	
+	public static DataSourceConfig getInstance() {
+		if(INSTANCE == null) {
+			synchronized (DataSourceConfig.class) {
+				if(INSTANCE == null) {
+					return new DataSourceConfig();
+				}
+			}
+		}
+		return INSTANCE;
+	}
+	
 
+	
 	// 扫描dao包
     static final String DAOPACKAGE = "com.boot.org.dao";
-  //@Value("${spring.datasource.one.url}")
-    //"jdbc:postgresql://47.92.81.255:5432/business"
-    protected static String url = "";
-	//@Value("${spring.datasource.one.username}")
-    //"jubaoadmin123"
-    protected static String username = "";
 
-    //@Value("${spring.datasource.one.password}")
-    //"junbao@123"
-    protected static String password = "";
-
-    //@Value("${spring.datasource.driver-class-name}")
-    //"org.postgresql.Driver"
-    protected static String driverClassName = "";
+    @Value("${spring.datasource.one.url}")
+    private String url;
+    
+	@Value("${spring.datasource.one.username}")
+	private String username;
+	
+    @Value("${spring.datasource.one.password}")
+    private String password;
+    
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverClassName;
 
     @Value("${spring.datasource.initialSize}")
     private int initialSize;
@@ -72,17 +86,17 @@ public class DataSourceConfig {
     private String filters;
 
     @Value("${spring.datasource.connectionProperties}")
-    private Properties connectionProperties;
+    private static Properties connectionProperties;
     
     @Bean(name = "dataSource")
     @Primary
     public DataSource getDataSource() {
+    	System.out.println("热加载数据源配置::::加载getDataSource");
         DruidDataSource druidDataSource = new DruidDataSource();
-        druidDataSource.setUrl(DataSourceConfig.url);
+        druidDataSource.setUrl(url);
         druidDataSource.setUsername(username);
         druidDataSource.setPassword(password);
         druidDataSource.setDriverClassName(driverClassName);
-        System.out.println("消费者数据库连接获取"+DataSourceConfig.url);
         // druid配置
         druidDataSource.setInitialSize(initialSize);
         druidDataSource.setMaxActive(maxActive);
@@ -105,6 +119,7 @@ public class DataSourceConfig {
     @Bean(name = "defaultSqlSessionFactory")
     @Primary
     public SqlSessionFactory sqlSessionFactoryBean(@Qualifier("dataSource") DataSource dataSource) {
+    	System.out.println("加载sqlSessionFactoryBean");
         SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -120,46 +135,135 @@ public class DataSourceConfig {
     @Bean(name = "defaultSqlSessionTemplate")
     @Primary
     public SqlSessionTemplate defaultSqlSessionTemplate(SqlSessionFactory sqlSessionFactory){
+    	System.out.println("加载defaultSqlSessionTemplate");
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
     @Bean(name = "defaultTransactionManager")
     @Primary
     public DataSourceTransactionManager defaultAnnotationDrivenTransactionManager(){
+    	System.out.println("加载defaultAnnotationDrivenTransactionManager");
         return new DataSourceTransactionManager(getDataSource());
     }
 
-	public static String getUrl() {
+	public String getUrl() {
 		return url;
 	}
 
-	public static void setUrl(String url) {
-		DataSourceConfig.url = url;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	public static String getUsername() {
+	public String getUsername() {
 		return username;
 	}
 
-	public static void setUsername(String username) {
-		DataSourceConfig.username = username;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public static String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
-	public static void setPassword(String password) {
-		DataSourceConfig.password = password;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public static String getDriverClassName() {
+	public String getDriverClassName() {
 		return driverClassName;
 	}
 
-	public static void setDriverClassName(String driverClassName) {
-		DataSourceConfig.driverClassName = driverClassName;
+	public void setDriverClassName(String driverClassName) {
+		this.driverClassName = driverClassName;
 	}
-    
-    
+
+	public int getInitialSize() {
+		return initialSize;
+	}
+
+	public void setInitialSize(int initialSize) {
+		this.initialSize = initialSize;
+	}
+
+	public int getMaxActive() {
+		return maxActive;
+	}
+
+	public void setMaxActive(int maxActive) {
+		this.maxActive = maxActive;
+	}
+
+	public boolean isRemoveAbandoned() {
+		return removeAbandoned;
+	}
+
+	public void setRemoveAbandoned(boolean removeAbandoned) {
+		this.removeAbandoned = removeAbandoned;
+	}
+
+	public int getRemoveAbandonedTimeout() {
+		return removeAbandonedTimeout;
+	}
+
+	public void setRemoveAbandonedTimeout(int removeAbandonedTimeout) {
+		this.removeAbandonedTimeout = removeAbandonedTimeout;
+	}
+
+	public int getTimeBetweenEvictionRunsMillis() {
+		return timeBetweenEvictionRunsMillis;
+	}
+
+	public void setTimeBetweenEvictionRunsMillis(int timeBetweenEvictionRunsMillis) {
+		this.timeBetweenEvictionRunsMillis = timeBetweenEvictionRunsMillis;
+	}
+
+	public String getValidationQuery() {
+		return validationQuery;
+	}
+
+	public void setValidationQuery(String validationQuery) {
+		this.validationQuery = validationQuery;
+	}
+
+	public boolean isTestWhileIdle() {
+		return testWhileIdle;
+	}
+
+	public void setTestWhileIdle(boolean testWhileIdle) {
+		this.testWhileIdle = testWhileIdle;
+	}
+
+	public boolean isTestOnBorrow() {
+		return testOnBorrow;
+	}
+
+	public void setTestOnBorrow(boolean testOnBorrow) {
+		this.testOnBorrow = testOnBorrow;
+	}
+
+	public boolean isTestOnReturn() {
+		return testOnReturn;
+	}
+
+	public void setTestOnReturn(boolean testOnReturn) {
+		this.testOnReturn = testOnReturn;
+	}
+
+	public String getFilters() {
+		return filters;
+	}
+
+	public void setFilters(String filters) {
+		this.filters = filters;
+	}
+
+	public static Properties getConnectionProperties() {
+		return connectionProperties;
+	}
+
+	public static void setConnectionProperties(Properties connectionProperties) {
+		DataSourceConfig.connectionProperties = connectionProperties;
+	}
+
 }
